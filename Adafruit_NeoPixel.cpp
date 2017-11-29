@@ -2040,6 +2040,16 @@ uint32_t Adafruit_NeoPixel::getPixelColor(uint16_t n) const {
   }
 }
 
+//Linear Interpolation between two RGBW colors A and B, a level of 0 is A, a level of 255 is B
+uint32_t Adafruit_NeoPixel::interpolateRGBW(uint32_t a, uint32_t b, uint8_t level){
+	uint32_t result = 0;
+	uint8_t *result_pointer = (uint8_t *) & result;
+	uint8_t *apointer = (uint8_t *) & a;
+	uint8_t *bpointer = (uint8_t *) & b;
+	for (byte i = 0; i < 4; i ++) result_pointer[i] = (uint8_t) (((uint16_t)((255 - level) * apointer[i]) + (uint16_t)(level * bpointer[i] ))>>8) ;
+	return result;
+}
+
 // Returns pointer to pixels[] array.  Pixel data is stored in device-
 // native format and is not translated here.  Application will need to be
 // aware of specific pixel data format and handle colors appropriately.
